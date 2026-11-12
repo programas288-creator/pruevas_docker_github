@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "TestDockerRN",
+    "slug": "test-docker-rn",
+    "version": "1.0.0",
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}

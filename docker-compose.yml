@@ -1,0 +1,45 @@
+# Author: Pxndx
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: rn_postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: pruebas_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - pg_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: rn_node_backend
+    restart: always
+    ports:
+      - "4000:4000"
+    environment:
+      DB_USER: admin
+      DB_PASSWORD: password123
+      DB_NAME: pruebas_db
+      DB_HOST: db
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    container_name: rn_web_frontend
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      - CI=true
+    depends_on:
+      - backend
+
+volumes:
+  pg_data:
